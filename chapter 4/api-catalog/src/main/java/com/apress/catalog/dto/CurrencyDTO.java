@@ -1,7 +1,11 @@
 package com.apress.catalog.dto;
 
-import java.io.Serializable;
+import java.io.Serializable; 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
+import lombok.Data;
+@Data
 public class CurrencyDTO implements Serializable {
     private Long id;
     private String code;
@@ -23,59 +27,7 @@ public class CurrencyDTO implements Serializable {
         this.decimalPlaces = decimalPlaces;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getEnable() {
-        return enable;
-    }
-
-    public void setEnable(Boolean enable) {
-        this.enable = enable;
-    }
-
-    public Integer getDecimalPlaces() {
-        return decimalPlaces;
-    }
-
-    public void setDecimalPlaces(Integer decimalPlaces) {
-        this.decimalPlaces = decimalPlaces;
-    }
-
-    public AuditDTO getAudit() {
-        return audit;
-    }
-
-    public void setAudit(AuditDTO audit) {
-        this.audit = audit;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this,ToStringStyle.JSON_STYLE,true);
+	}
 }

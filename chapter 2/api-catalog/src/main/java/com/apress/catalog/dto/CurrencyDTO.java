@@ -7,6 +7,7 @@ public class CurrencyDTO {
     private Boolean enable;
     private Integer decimalPlaces;
 
+    
     public CurrencyDTO(Long id, String code, String description, Boolean enable, Integer decimalPlaces) {
         this.id = id;
         this.code = code;
