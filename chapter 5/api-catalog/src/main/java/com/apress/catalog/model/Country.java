@@ -21,7 +21,7 @@ import java.util.Objects;
 @Table(name= "country") //This annotation is optionally
 public class Country implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "code", nullable = false, length = 4)
 	private String code;
