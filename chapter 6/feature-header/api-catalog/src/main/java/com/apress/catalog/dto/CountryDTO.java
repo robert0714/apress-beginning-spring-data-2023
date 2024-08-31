@@ -4,6 +4,13 @@ package com.apress.catalog.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+@Setter
+@Getter
+@EqualsAndHashCode(exclude= {"currency"})
 public class CountryDTO implements Serializable {
 	private Long id;
 	private String code;
@@ -26,69 +33,5 @@ public class CountryDTO implements Serializable {
 		this.timezone = timezone;
 		this.enabled = enabled;
 		this.currency = currency;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLocale() {
-		return locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-
-	public String getTimezone() {
-		return timezone;
-	}
-
-	public void setTimezone(String timezone) {
-		this.timezone = timezone;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public CurrencyDTO getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(CurrencyDTO currency) {
-		this.currency = currency;
-	}
-
-	public List<StateDTO> getStates() {
-		return states;
-	}
-
-	public void setStates(List<StateDTO> states) {
-		this.states = states;
-	}
+	} 
 }
