@@ -1,0 +1,29 @@
+services:
+  postgres: 
+    image: postgres:15.6
+    container_name: postgres
+    restart: always
+    # volumes: 
+    #   - ./../databases/scripts/postgres/V1.0__init_database.sql:/docker-entrypoint-initdb.d/V1.0__init_database.sql
+    #   - ./../databases/scripts/postgres/V1.1__insert_rows.sql:/docker-entrypoint-initdb.d/V1.1__insert_rows.sql
+    #   - ./../databases/scripts/postgres/V2.0__audit_tables(run on chapter 4).sql:/docker-entrypoint-initdb.d/V2.0__audit_tables.sql 
+    environment:
+      POSTGRES_DB: catalog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres       
+      TZ: Asia/Taipei
+    #  network_mode: host
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: robert0714@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      TZ: Asia/Taipei
+    ports:
+      - 5050:80
+    depends_on:
+      - postgres
