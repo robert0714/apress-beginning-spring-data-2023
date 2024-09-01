@@ -1,25 +1,14 @@
 package com.apress.catalog.service;
 
-import com.apress.catalog.dto.CountryDTO;
-import com.apress.catalog.dto.CurrencyDTO; 
-import com.apress.catalog.mapper.ApiMapper;
-import com.apress.catalog.model.Country;
-import com.apress.catalog.model.Currency;
-import com.apress.catalog.repository.CountryRepository;
-import com.apress.catalog.repository.CurrencyRepository;
+import com.apress.catalog.dto.CountryDTO; 
  
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test; 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest; 
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.boot.test.context.SpringBootTest;  
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup; 
  
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*; 
 
@@ -30,76 +19,49 @@ import static org.junit.jupiter.api.Assertions.*;
  * https://github.com/danson-placeholder-service/posts/blob/main/src/test/java/dev/danvega/danson/post/PostControllerIntTest.java<p>
  * https://www.baeldung.com/spring-test-programmatic-transactions<p>
  * **/
-@SpringBootTest 
-@TestPropertySource(properties = "debug=true")
-public class CountryServiceTest { 
-
-	@Autowired
-    private CountryRepository countryRepository;
-	
-	@Autowired
-    private CurrencyRepository currencyRepository; 
- 
+@SpringBootTest ( 
+        properties = {   
+    		       "logging.level.org.springframework.jdbc.support.JdbcTransactionManager=TRACE",                         		       
+                   "logging.level.org.springframework.data=INFO",
+                   "logging.level.org.springframework.jdbc.core.JdbcTemplate=TRACE" , 
+                   "logging.level.org.springframework.transaction.interceptor=TRACE",
+				   "logging.level.org.springframework.orm.jpa=DEBUG",
+                   "logging.level.org.springframework.transaction=DEBUG",
+        })
+//@TestPropertySource(properties = "debug=true")
+public class CountryServiceTest {  
     @Autowired
     private CountryService countryService;
     
 
     @SqlGroup({
 		@Sql(scripts = { "classpath:testcontainers/V1.0__init_database.sql" ,
-				         "classpath:testcontainers/V1.0.1__insert_rows_in_currency.sql"   },  
+				         "classpath:testcontainers/V1.0.1__insert_rows_for_test.sql"   },  
 				executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-		@Sql(scripts = {"classpath:testcontainers/V1.0.2__remove_rows_in_currency.sql"},
+		@Sql(scripts = {"classpath:testcontainers/V1.0.2__remove_rows_for_test.sql"},
 				executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
           })
 	@Test   
-    @DisplayName("should perform a rollback because DataIntegrityViolationException")
+    @DisplayName("should perform a rollback because PersistenceException")
     public void should_rollback_transaction_on_exception() throws InterruptedException {    	
-    	CountryDTO countryDTO = pseudocountryDTO () ; 
+    	CountryDTO countryDTO = countryService.getById(1L); 
     	assertNotNull(countryDTO);
-        
+    	
 		assertThrows( Exception.class,				
-				() -> countryService.save(countryDTO),				
+				() -> {
+					countryService.delete(1L);
+					CountryDTO countryDTO2 = countryService.getById(1L); 
+					countryService.save(countryDTO2);
+					},				
 				"PersistenceException not thrown!");
         
-        Optional<Country> result = countryRepository.findById(1L);     
-       
-        assertFalse(result.isPresent()); 
-    }
-    
-    
-    protected CountryDTO pseudocountryDTO () {
-    	CountryDTO countryDTO = new CountryDTO();
-        countryDTO.setEnabled(Boolean.TRUE);
-        countryDTO.setCode("ARG");
-        countryDTO.setName("Argentina");
-        countryDTO.setLocale("Tawain");
-        countryDTO.setTimezone("zh_TW");
+      
         
-//        Currency currency = scenarioBy(1); 
-        Currency currency = scenarioBy(0);
-        
-//        StateDTO stateDTO = new StateDTO(1L, "CA", "California", true, countryDTO);
-//        countryDTO.setStates(List.of(stateDTO));
-        
-        CurrencyDTO currencyDTO = ApiMapper.INSTANCE.entityToDTO(currency );
-        countryDTO.setCurrency(currencyDTO); 
-        return countryDTO ;
-    } 
-    protected Currency scenarioBy(int scenario) {
-    	switch(scenario) {
-    		case 0:
-    			return dataIntegrityViolationCurrency() ;
-    		default:
-    			return currencyRepository.findById(1L).get() ;
-    	}
-    }
-    protected Currency dataIntegrityViolationCurrency() {
-    	Currency currency = new Currency( ); 
-        currency.setCode("ARS");
-        currency.setDescription("Peso argentino");
-        currency.setEnabled(true);
-        currency.setDecimalPlaces(2);
-        currency.setSymbol("$");  
-        return currency;
+		var result = countryService.getById(1L) ;
+        assertAll( "state'enable was not updated to false" ,
+                () -> assertNotNull(result),
+                () -> assertNotEquals(true, result.getEnabled()),
+                () -> assertNotEquals(true, result.getStates().get(0).getEnabled())
+        ); 
     }
 }
