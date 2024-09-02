@@ -33,5 +33,6 @@ public class CountryDTO {
 		this.timezone = timezone;
 		this.enabled = enabled;
 		this.currency = currency;
-	} 
+	}
+ 
 }
