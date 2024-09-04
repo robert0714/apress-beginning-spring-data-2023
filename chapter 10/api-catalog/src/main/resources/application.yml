@@ -11,8 +11,7 @@ server:
     context-path: /api/catalog
 
 spring:
-  data:
-    cassandra:
+    cassandra: 
       keyspace-name: twa
       schema-action: recreate
       local-datacenter: datacenter1

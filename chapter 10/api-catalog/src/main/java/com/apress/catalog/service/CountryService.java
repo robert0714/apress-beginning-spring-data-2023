@@ -5,8 +5,7 @@ import com.apress.catalog.mapper.ApiMapper;
 import com.apress.catalog.model.Country;
 import com.apress.catalog.model.State;
 import com.apress.catalog.repository.CountryRepository;
-import com.apress.catalog.repository.StateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.apress.catalog.repository.StateRepository; 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +16,17 @@ import jakarta.validation.Validator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class CountryService {
 
-	CountryRepository countryRepository;
+	final CountryRepository countryRepository;
 
-	StateRepository stateRepository;
-	Validator validator;
+	final StateRepository stateRepository;
+	final Validator validator;
 
-	@Autowired
+	 
 	public CountryService(CountryRepository countryRepository, StateRepository stateRepository,
 						  Validator validator) {
 		this.countryRepository = countryRepository;
@@ -35,7 +35,7 @@ public class CountryService {
 	}
 
 	@Transactional(readOnly = true)
-	public CountryDTO getById(Long id) {
+	public CountryDTO getById(UUID id) {
 		CountryDTO response = null;
 		Optional<Country> country = countryRepository.findById(id);
 		
@@ -55,7 +55,7 @@ public class CountryService {
 	}
 
 	@Transactional(isolation = Isolation.DEFAULT)
-	public void delete(Long id) throws InterruptedException {
+	public void delete(UUID id) throws InterruptedException {
 		Optional<Country> country = countryRepository.findById(id);
 		List<State> states = stateRepository.findAllByCountryId(country.get().getId());
 

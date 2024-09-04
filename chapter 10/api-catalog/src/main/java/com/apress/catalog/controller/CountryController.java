@@ -2,6 +2,9 @@ package com.apress.catalog.controller;
 
 import com.apress.catalog.dto.CountryDTO;
 import com.apress.catalog.service.CountryService;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/country")
 public class CountryController {
 
-    private CountryService countryService;
-
-    @Autowired
+    private final  CountryService countryService;
+ 
     public CountryController(CountryService countryService) {
         this.countryService = countryService;
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CountryDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<CountryDTO> getById(@PathVariable UUID id) {
         CountryDTO response = countryService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -37,7 +39,7 @@ public class CountryController {
     }
     
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws InterruptedException {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) throws InterruptedException {
         countryService.delete(id);
         return ResponseEntity.ok().build();
     }
