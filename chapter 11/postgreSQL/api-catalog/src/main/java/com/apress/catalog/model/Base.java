@@ -9,6 +9,7 @@ import java.util.Objects;
 @MappedSuperclass
 public abstract class Base implements Serializable {
 
+	@org.springframework.data.annotation.Id
     @Id //Identify which is the primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Indicate the way to generate the ID
     private Long id;

@@ -67,7 +67,7 @@ public class CountryServiceTest2 {
         when(countryRepository.save(any(Country.class))).thenReturn(mono);
         when(mono.blockOptional() ).thenReturn(Optional.of(country));
         
-        CountryDTO result = countryService.save(countryDTO);
+        Mono<CountryDTO> result = countryService.save(countryDTO);
         assertNotNull(result);
     }
 
@@ -79,7 +79,7 @@ public class CountryServiceTest2 {
         when(countryRepository.save(any(Country.class))).thenReturn(mono);
         when(mono.blockOptional() ).thenReturn(Optional.of(country));
         
-        CountryDTO result = countryService.update(countryDTO);
+        Mono<CountryDTO>  result = countryService.update(countryDTO);
         assertNotNull(result);
     }
     @Test

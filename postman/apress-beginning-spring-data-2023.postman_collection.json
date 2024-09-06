@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "8928371c-095c-43ad-a9d8-3e334a64d7c5",
+		"name": "apress-beginning-spring-data-2023",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "537709"
+	},
+	"item": [
+		{
+			"name": "currency_add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"code\":  \"ARS\",\r\n    \"description\" : \"Apress argentino\",\r\n    \"enable\": null,\r\n    \"decimalPlaces\": 2,\r\n    \"symbol\": \"$\",\r\n    \"audit\": {},\r\n    \"states\":{}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/catalog/currency",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"catalog",
+						"currency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "country_add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"code\": \"AU\",\r\n    \"name\": \"Australia\",\r\n    \"locale\": \"en_US\",\r\n    \"enabled\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/catalog/country",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"catalog",
+						"country"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "currency_get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"code\":  \"ARS\",\r\n    \"description\" : \"Apress argentino\",\r\n    \"enable\": null,\r\n    \"decimalPlaces\": 2,\r\n    \"symbol\": \"$\",\r\n    \"audit\": {},\r\n    \"states\":{}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/catalog/currency/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"catalog",
+						"currency",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "currency_update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"code\":  \"ARS\",\r\n    \"description\" : \"Apress argentino\",\r\n    \"enable\": null,\r\n    \"decimalPlaces\": 2,\r\n    \"symbol\": \"$\",\r\n    \"audit\": {},\r\n    \"states\":{}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/catalog/currency/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"catalog",
+						"currency",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "country_get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"code\":  \"ARS\",\r\n    \"description\" : \"Apress argentino\",\r\n    \"enable\": null,\r\n    \"decimalPlaces\": 2,\r\n    \"symbol\": \"$\",\r\n    \"audit\": {},\r\n    \"states\":{}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/catalog/country/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"catalog",
+						"country",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "country_update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n    \"code\":  \"ARS\",\r\n    \"description\" : \"Apress argentino\",\r\n    \"enable\": null,\r\n    \"decimalPlaces\": 2,\r\n    \"symbol\": \"$\",\r\n    \"audit\": {},\r\n    \"states\":{}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/catalog/country/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"catalog",
+						"country",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

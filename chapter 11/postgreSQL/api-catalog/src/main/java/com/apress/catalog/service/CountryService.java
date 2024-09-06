@@ -9,7 +9,8 @@ import com.apress.catalog.repository.StateRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import org.springframework.beans.factory.annotation.Autowired;
+import reactor.core.publisher.Mono;
+ 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,31 +27,36 @@ public class CountryService {
 	StateRepository stateRepository;
 
 	Validator validator;
-
-	@Autowired
+  
 	public CountryService(CountryRepository countryRepository, StateRepository stateRepository, Validator validator) {
 		this.countryRepository = countryRepository;
 		this.stateRepository = stateRepository;
 		this.validator = validator;
 	}
 
+	@Deprecated
 	@Transactional(readOnly = true)
 	public CountryDTO getById(Long id) {
-		CountryDTO response = null;
-		Optional<Country> country = countryRepository.findById(id).blockOptional();
-		
+		CountryDTO response = null; 		
+		Optional<Country> country = countryRepository.findById(id).blockOptional();		
 		if(country.isPresent()) {
 			response = ApiMapper.INSTANCE.entityToDTO(country.get());
-		}
-		
+		}		
+		return response;
+	}
+	
+	@Transactional(readOnly = true)
+	public Mono<CountryDTO> getByIdMono(Long id) {
+		Mono<CountryDTO> response = countryRepository.findById(id)
+									.map(ApiMapper.INSTANCE::entityToDTO) ;		
 		return response;
 	}
 
-	public CountryDTO save(CountryDTO currency) {
+	public Mono<CountryDTO> save(CountryDTO currency) {
 		return saveInformation(currency);
 	}
 
-	public CountryDTO update(CountryDTO currency) {
+	public Mono<CountryDTO> update(CountryDTO currency) {
 		return saveInformation(currency);
 	}
 
@@ -72,15 +78,27 @@ public class CountryService {
 		}
 	}
 
-	private CountryDTO saveInformation(CountryDTO country) {
-		Country entity = ApiMapper.INSTANCE.DTOToEntity(country);
+	private Mono<CountryDTO> saveInformation( CountryDTO  country ) {
+//		Mono<CountryDTO> response = countryMono
+//		  .map(ApiMapper.INSTANCE::DTOToEntity)
+//		          .flatMap(entity -> {
+//		        	  Set<ConstraintViolation<Country>> violations = validator.validate(entity);
+//			      	  if(!violations.isEmpty()) {
+//			      			throw new ConstraintViolationException(violations);
+//			      	  }
+//		        	  return countryRepository.save(entity);
+//		        })
+//		   .map(ApiMapper.INSTANCE::entityToDTO);
+		
+		 Country entity = ApiMapper.INSTANCE.DTOToEntity(country);
 		Country savedEntity = countryRepository.save(entity).block();
 
 		Set<ConstraintViolation<Country>> violations = validator.validate(entity);
 		if(!violations.isEmpty()) {
 			throw new ConstraintViolationException(violations);
 		}
-
-		return ApiMapper.INSTANCE.entityToDTO(savedEntity);
+		Mono<CountryDTO> response = countryRepository.save(savedEntity)
+				.map(ApiMapper.INSTANCE::entityToDTO) ;		
+		return response;
 	}
 }

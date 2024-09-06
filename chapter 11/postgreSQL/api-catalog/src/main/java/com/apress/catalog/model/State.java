@@ -7,7 +7,9 @@ import java.util.Objects;
 
 @Entity //This annotation indicates to JPA that it’s something that has a persistent state
 @Table(name= "state") //This annotation is optionally
+@org.springframework.data.relational.core.mapping.Table
 public class State implements Serializable {
+	@org.springframework.data.annotation.Id
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;

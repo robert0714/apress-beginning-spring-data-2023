@@ -1,21 +1,25 @@
-version: '3.1'
-
 services:
-  db:
-    image: postgres:14
+  postgres:
+    image: postgres:15.6
+    container_name: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: catalog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres       
+      TZ: Asia/Taipei
     ports:
       - 5432:5432      
 
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: sacco.andres@gmail.com
       PGADMIN_DEFAULT_PASSWORD: postgres
+      TZ: Asia/Taipei
     ports:
       - 5050:80
     depends_on:
-      - db
+      - postgres

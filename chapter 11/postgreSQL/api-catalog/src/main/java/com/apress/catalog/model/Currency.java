@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "currency")
+@org.springframework.data.relational.core.mapping.Table
 public class Currency extends Base implements Serializable {
 
 	@NotBlank(message = "Code is mandatory")

@@ -1,7 +1,11 @@
 package com.apress.catalog.controller;
 
+import com.apress.catalog.dto.CountryDTO;
 import com.apress.catalog.dto.CurrencyDTO;
 import com.apress.catalog.service.CurrencyService;
+
+import reactor.core.publisher.Mono;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -40,9 +44,11 @@ public class CurrencyControllerTest {
     @Test
     public void should_save_currency() {
         CurrencyDTO currencyDTO = new CurrencyDTO(2L, "EUR", "Euro", true, 2);
-        when(currencyService.save(currencyDTO)).thenReturn(currencyDTO);
+        Mono<CurrencyDTO> mono = mock(Mono.class);
+        when(mono.block()).thenReturn(currencyDTO);
+        when(currencyService.save(currencyDTO)).thenReturn(mono);
 
-        ResponseEntity<CurrencyDTO> response = currencyController.save(currencyDTO);
+        ResponseEntity<Mono<CurrencyDTO>> response = currencyController.save(currencyDTO);
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -52,9 +58,11 @@ public class CurrencyControllerTest {
     @Test
     public void should_update_currency() {
         CurrencyDTO currencyDTO = new CurrencyDTO(3L, "GBP", "Pound", true, 2);
-        when(currencyService.update(currencyDTO)).thenReturn(currencyDTO);
+        Mono<CurrencyDTO> mono = mock(Mono.class);
+        when(mono.block()).thenReturn(currencyDTO);
+        when(currencyService.update(currencyDTO)).thenReturn(mono);
 
-        ResponseEntity<CurrencyDTO> response = currencyController.update(currencyDTO);
+        ResponseEntity<Mono<CurrencyDTO>> response  = currencyController.update(currencyDTO);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());

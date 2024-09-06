@@ -33,10 +33,14 @@ spring:
     hibernate:
       ddl-auto: validate
   flyway:
+    url: jdbc:postgresql://localhost:5432/catalog?autoReconnect=true
+    user: postgres
+    password: postgres
     sql-migration-prefix: V
     sql-migration-separator: __
     sql-migration-suffixes: .sql
     locations: classpath:db/migration
+    schemas: public
     repeatable-sql-migration-prefix: R
     baseline-on-migrate: true
     baseline-version: 0
