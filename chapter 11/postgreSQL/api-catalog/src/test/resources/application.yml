@@ -1,0 +1,32 @@
+management:
+  endpoints:    
+    web:
+      base-path: /
+      exposure:
+        include: "*" # Indicate that all the endpoints are expose it.
+
+server:
+  port: 8080 # Indicate the default port of the application
+  servlet:
+    context-path: /api/catalog # Indicate the default url
+spring:
+  r2dbc: 
+    url: r2dbc:tc:postgresql:///spring_data?TC_IMAGE_TAG=15.6
+    pool:
+      max-create-connection-time: 2s
+      initial-size: 5
+      max-size: 10
+  datasource:
+    url: jdbc:tc:postgresql:15.6:///spring_data
+  sql:
+    init:
+      platform: postgresql
+  flyway:
+    enabled: false
+    sql-migration-prefix: V
+    sql-migration-separator: __
+    sql-migration-suffixes: .sql
+    locations: classpath:db/migration
+    repeatable-sql-migration-prefix: R
+    baseline-on-migrate: true
+    baseline-version: 0      
