@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
@@ -20,8 +21,9 @@ import java.util.Objects;
 @Entity //This annotation indicates to JPA that it’s something that has a persistent state
 @Table(name= "country") //This annotation is optionally
 public class Country implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "country_generator")
+	@SequenceGenerator(name = "country_generator", sequenceName = "country_seq", allocationSize = 1)
 	private Long id;
 	@Column(name = "code", nullable = false, length = 4)
 	private String code;

@@ -11,7 +11,7 @@ function fn() {
   if (env == 'dev') {
     config.AppUrl = 'http://127.0.0.1:8090' + config.AppUrl
   } else if (env == 'e2e') {
-    config.AppUrl = 'http://127.0.0.1:8090' + config.AppUrl
+    config.AppUrl = 'http://127.0.0.1:8080' + config.AppUrl
   }
   return config;
 }

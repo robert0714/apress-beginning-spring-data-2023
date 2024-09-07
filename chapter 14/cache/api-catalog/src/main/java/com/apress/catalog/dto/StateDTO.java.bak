@@ -25,5 +25,5 @@ public class StateDTO implements Serializable {
 		this.name = name;
 		this.enabled = enabled;
 		this.country = country;
-	}
+	} 
 }

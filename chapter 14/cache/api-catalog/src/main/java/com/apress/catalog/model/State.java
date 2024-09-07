@@ -8,8 +8,9 @@ import java.util.Objects;
 @Entity //This annotation indicates to JPA that it’s something that has a persistent state
 @Table(name= "state") //This annotation is optionally
 public class State implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "state_generator")
+	@SequenceGenerator(name = "state_generator", sequenceName = "state_seq", allocationSize = 1)
 	private Long id;
 	@Column(name = "code", nullable = false, length = 4)
 	private String code;
