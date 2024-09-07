@@ -8,8 +8,8 @@
 		<version>3.2.9</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.apress </groupId>
-	<artifactId>api-catalog </artifactId>
+	<groupId>com.apress</groupId>
+	<artifactId>api-catalog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>api-catalog </name>
 	<description>Microservices which contain all the information of the catalog </description>

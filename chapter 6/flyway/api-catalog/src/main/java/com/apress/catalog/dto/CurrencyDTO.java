@@ -1,7 +1,7 @@
 package com.apress.catalog.dto;
 
 import java.io.Serializable;
- 
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
