@@ -1,10 +1,9 @@
 package com.apress.catalog.controller;
-
-import com.apress.catalog.dto.CountryDTO;
-import com.apress.catalog.dto.CurrencyDTO;
+ 
+import com.apress.catalog.dto.CurrencyDTO; 
 import com.apress.catalog.service.CurrencyService;
 
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Mono; 
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*; 
 import static org.mockito.Mockito.*;
 
 public class CurrencyControllerTest {
@@ -52,7 +51,7 @@ public class CurrencyControllerTest {
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(currencyDTO, response.getBody());
+        assertEquals(currencyDTO, response.getBody().block());
     }
 
     @Test
@@ -66,17 +65,15 @@ public class CurrencyControllerTest {
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(currencyDTO, response.getBody());
+        assertEquals(currencyDTO, response.getBody().block());
     }
 
     @Test
-    public void should_delete_currency() {
-        doNothing().when(currencyService).delete(4L);
-
+    public void should_delete_currency() {  
         ResponseEntity<Void> response = currencyController.delete(4L);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(currencyService, times(1)).delete(4L);
-    }
+    } 
 }

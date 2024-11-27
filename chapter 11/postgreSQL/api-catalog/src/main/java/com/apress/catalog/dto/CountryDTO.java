@@ -3,13 +3,12 @@ package com.apress.catalog.dto;
 
 import java.io.Serializable;
 import java.util.List;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 @Setter
 @Getter
-@EqualsAndHashCode(exclude= {"currency"})
+@EqualsAndHashCode(exclude= {"currency" ,"states"})
 public class CountryDTO implements Serializable {
 	private Long id;
 	private String code;

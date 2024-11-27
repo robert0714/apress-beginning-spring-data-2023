@@ -20,14 +20,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup; 
- 
+import org.springframework.test.context.jdbc.SqlGroup;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Optional; 
 
 /**
  * refer <p>
@@ -61,8 +61,16 @@ public class CountryServiceTest {
     @Autowired 
     private ConnectionFactory connectionFactory;
     
+    
+    @Container
+    public static  PostgreSQLContainer<?> postgresql = new  PostgreSQLContainer<>(DockerImageName.parse("postgres:15.6"))
+        .withDatabaseName("spring_data")
+        .withUsername("test")
+        .withPassword("test");
+    
     @BeforeEach
    	protected void setUp() throws Exception {
+    	postgresql.start();
     	//https://learn.microsoft.com/zh-tw/azure/developer/java/spring-framework/configure-spring-data-r2dbc-with-azure-mysql#create-the-database-schema
         
     	ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
@@ -87,6 +95,7 @@ public class CountryServiceTest {
 				);
         initializer.setDatabasePopulator(populator);
         initializer.afterPropertiesSet();
+        postgresql.stop();
 	}
 
     

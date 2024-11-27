@@ -5,10 +5,14 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "currency")
 @org.springframework.data.relational.core.mapping.Table
@@ -44,47 +48,7 @@ public class Currency extends Base implements Serializable {
 		this.decimalPlaces = decimalPlaces;
 		this.symbol = symbol;
 	}
-	
-	public String getCode() {
-		return code;
-	}
-	
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	
-	public int getDecimalPlaces() {
-		return decimalPlaces;
-	}
-	
-	public void setDecimalPlaces(int decimalPlaces) {
-		this.decimalPlaces = decimalPlaces;
-	}
-
-	public String getSymbol() {
-		return symbol;
-	}
-
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-
+	 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -98,4 +62,17 @@ public class Currency extends Base implements Serializable {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), code, symbol, description, enabled, decimalPlaces);
 	}
+	
+	// toString method
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "id=" + super.getId().toString() +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", enabled=" + enabled +
+                ", decimalPlaces=" + decimalPlaces +
+                ", symbol='" + symbol + '\'' +
+                '}';
+    }
 }

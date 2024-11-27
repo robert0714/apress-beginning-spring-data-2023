@@ -16,7 +16,7 @@ public class CurrencyDTO implements Serializable {
     private Integer decimalPlaces;
 
     private String symbol;
-
+ 
     private AuditDTO audit;
 
 	public CurrencyDTO() {}
@@ -27,5 +27,15 @@ public class CurrencyDTO implements Serializable {
         this.description = description;
         this.enable = enable;
         this.decimalPlaces = decimalPlaces;
+    }
+ // toString method
+    @Override
+    public String toString() {
+        return "CurrencyDTO{" +
+                "id=" + getId().toString() +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", enable=" + enable +
+                ", decimalPlaces=" + decimalPlaces +'}';
     }
 }

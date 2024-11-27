@@ -2,34 +2,33 @@ package com.apress.catalog.service;
 
 import com.apress.catalog.dto.CurrencyDTO;
 import com.apress.catalog.mapper.ApiMapper;
-import com.apress.catalog.model.Country;
 import com.apress.catalog.model.Currency;
 import com.apress.catalog.repository.CurrencyRepository;
+
 import jakarta.validation.Validator;
-import reactor.core.publisher.Mono;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations; 
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
+import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*; 
+import static org.mockito.Mockito.*;
+
+import java.util.Set;
 
 public class CurrencyServiceTest {
     @Mock
     private CurrencyRepository repository;
 
-    @Mock
-    private Validator validator;
-
     @InjectMocks
     private CurrencyService currencyService;
+    
+    @Mock
+    private Validator validator;
 
     @BeforeEach
     public void setUp() {
@@ -39,79 +38,73 @@ public class CurrencyServiceTest {
     @Test
     public void should_get_currency_by_id() {
         Currency currency = new Currency(1L, "USD", "Dollar", true, 2, "$");
-        Mono<Currency> mono = mock( Mono.class);
-        when(repository.findById(1L)).thenReturn(mono);
-        when(mono.blockOptional() ).thenReturn(Optional.of(currency));
-        CurrencyDTO currencyDTO = ApiMapper.INSTANCE.entityToDTO(currency);
-
-        CurrencyDTO result = currencyService.getById(1L);
-
-        assertNotNull(result);
-        assertEquals(currencyDTO, result);
+        when(repository.findById(1L)).thenReturn(Mono.just(currency));
+        
+        Mono<CurrencyDTO> result = currencyService.getByIdMono(1L);
+        
+        StepVerifier.create(result)
+                .assertNext(currencyDTO -> {
+                    assertNotNull(currencyDTO);
+                    assertEquals("USD", currencyDTO.getCode());
+                })
+                .verifyComplete();
     }
 
     @Test
     public void should_save_currency() {
         CurrencyDTO currencyDTO = new CurrencyDTO(2L, "EUR", "Euro", true, 2);
         Currency currency = ApiMapper.INSTANCE.DTOToEntity(currencyDTO);
-        Mono<Currency> mono = mock( Mono.class);
-        when(repository.save(any(Currency.class))).thenReturn(mono);
-        when(mono.blockOptional() ).thenReturn(Optional.of(currency));
+        when(repository.save(any(Currency.class))).thenReturn(Mono.just(currency));
 
-        CurrencyDTO result = currencyService.save(currencyDTO);
+        Mono<CurrencyDTO> result = currencyService.save(currencyDTO);
 
-        assertNotNull(result);
-        assertEquals(currencyDTO, result);
+        StepVerifier.create(result)
+                .assertNext(savedCurrency -> assertEquals("EUR", savedCurrency.getCode()))
+                .verifyComplete();
     }
 
     @Test
     public void should_update_currency() {
         CurrencyDTO currencyDTO = new CurrencyDTO(3L, "GBP", "Pound", true, 2);
         Currency currency = ApiMapper.INSTANCE.DTOToEntity(currencyDTO);
-        Mono<Currency> mono = mock( Mono.class);
-        when(repository.save(any(Currency.class))).thenReturn(mono);
-        when(mono.blockOptional() ).thenReturn(Optional.of(currency));
+        when(repository.save(any(Currency.class))).thenReturn(Mono.just(currency));
 
-        CurrencyDTO result = currencyService.update(currencyDTO);
+        Mono<CurrencyDTO> result = currencyService.update(currencyDTO);
 
-        assertNotNull(result);
-        assertEquals(currencyDTO, result);
+        StepVerifier.create(result)
+                .assertNext(updatedCurrency -> assertEquals("GBP", updatedCurrency.getCode()))
+                .verifyComplete();
     }
 
     @Test
     public void should_delete_currency() {
-        Currency currency = new Currency(4L, "JPY", "Yen", true, 2, "$");
-        Mono<Currency> mono = mock( Mono.class);
-        when(repository.findById(4L)).thenReturn(mono);
-        when(mono.blockOptional() ).thenReturn(Optional.of(currency));
-        currencyService.delete(4L);
+        Currency currency = new Currency(4L, "JPY", "Yen", true, 2, "¥");
+        when(repository.findById(4L)).thenReturn(Mono.just(currency));
+        when(repository.save(any(Currency.class))).thenReturn(Mono.empty());
+
+        Mono<Void> result = currencyService.delete(4L);
+
+        StepVerifier.create(result)
+                .verifyComplete();
 
         verify(repository, times(1)).save(currency);
         assertFalse(currency.getEnabled());
     }
+
     @Test
-    @Rollback
-    @Transactional
-    public void should_rollback_transaction_on_exception() {
+    public void should_handle_exception_on_save() {
         CurrencyDTO currencyDTO = new CurrencyDTO(2L, "EUR", "Euro", true, 2);
-        Currency currency = ApiMapper.INSTANCE.DTOToEntity(currencyDTO);
-        
-        Mono<Currency> mono = mock( Mono.class);
-        when(repository.save(any(Currency.class))).thenReturn(mono);
-        when(mono.blockOptional() ).thenReturn(Optional.of(currency));
+        when(validator.validate(any())).thenReturn(Set.of());
 
-        // Simulate an exception to trigger rollback
-        doThrow(new RuntimeException("Simulated Exception")).when(repository).save(any(Currency.class));
+        when(repository.save(any(Currency.class)))
+                .thenThrow(new RuntimeException("Simulated Exception"));
 
-        assertThrows(RuntimeException.class, () -> {
-            currencyService.save(currencyDTO);
-        });
+        Mono<CurrencyDTO> result = currencyService.save(currencyDTO);
 
-        // Verify that the save method was called
+        StepVerifier.create(result)
+                .expectErrorMatches(throwable -> throwable instanceof RuntimeException && throwable.getMessage().equals("Simulated Exception"))
+                .verify();
+
         verify(repository, times(1)).save(any(Currency.class));
-
-        // Verify that the transaction was rolled back
-        Mono<Currency> result  = repository.findById(2L);
-        assertFalse(result.blockOptional().isPresent());
     }
 }

@@ -18,8 +18,8 @@ import java.util.Set;
 @Service
 public class CurrencyService {
 
-	CurrencyRepository repository;
-	Validator validator;
+	private final CurrencyRepository repository;
+	private final Validator validator;
 	 
 	public CurrencyService(CurrencyRepository repository, Validator validator) {
 		this.repository = repository;
@@ -37,38 +37,53 @@ public class CurrencyService {
 		return response;
 	}
 	public Mono<CurrencyDTO> getByIdMono(Long id) {
-		Mono<CurrencyDTO> response = repository.findById(id)
+		return repository.findById(id)
 				.map(ApiMapper.INSTANCE::entityToDTO) ;
-		return response;
 	}
 
 	public Mono<CurrencyDTO> save(CurrencyDTO currency) {
-		return saveInformation(currency);
+		return saveInformationV2(currency);
 	}
 
 	@Transactional
 	public Mono<CurrencyDTO> update(CurrencyDTO currency) {
-		return saveInformation(currency);
+		return saveInformationV1(currency);
 	}
 
-	public void delete(Long id) {
+	public Mono<Void>  delete(Long id) {
 		Optional<Currency> currency = repository.findById(id).blockOptional();
 
 		if(currency.isPresent()) {
 			currency.get().setEnabled(Boolean.FALSE);
-			repository.save(currency.get());
+			Mono<Currency> monoObject = repository.save(currency.get());
+			return monoObject.then();
+		}else{
+			Mono<Object> monoObject = Mono.just(currency);  
+			return monoObject.then();
 		}
 	}
 
-	private Mono<CurrencyDTO>  saveInformation(CurrencyDTO currency) {
+	private Mono<CurrencyDTO>  saveInformationV1(CurrencyDTO currency) {
 		Currency entity = ApiMapper.INSTANCE.DTOToEntity(currency);
 
 		Set<ConstraintViolation<Currency>> violations = validator.validate(entity);
 		if(!violations.isEmpty()) {
 			throw new ConstraintViolationException(violations);
 		}
-		Mono<CurrencyDTO> response = repository.save(entity)
+		return repository.save(entity)
 				.map(ApiMapper.INSTANCE::entityToDTO) ;
-		return response;
+	}
+	private Mono<CurrencyDTO>  saveInformationV2(CurrencyDTO currency) {		
+		return Mono.fromCallable(() -> {
+			final Currency entity = ApiMapper.INSTANCE.DTOToEntity(currency);
+			Set<ConstraintViolation<Currency>> violations = validator.validate(entity);
+			if(!violations.isEmpty()) {
+				throw new ConstraintViolationException(violations);
+			}
+            return entity;
+        })
+        .flatMap(repository::save)
+        .map(ApiMapper.INSTANCE::entityToDTO)
+        .onErrorMap(e -> new RuntimeException("Simulated Exception", e));
 	}
 }

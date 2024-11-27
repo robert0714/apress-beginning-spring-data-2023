@@ -48,7 +48,7 @@ public class CountryService {
 	@Transactional(readOnly = true)
 	public Mono<CountryDTO> getByIdMono(Long id) {
 		Mono<CountryDTO> response = countryRepository.findById(id)
-									.map(ApiMapper.INSTANCE::entityToDTO) ;		
+									.map(ApiMapper.INSTANCE::entityToDTO) ;
 		return response;
 	}
 
@@ -90,7 +90,7 @@ public class CountryService {
 //		        })
 //		   .map(ApiMapper.INSTANCE::entityToDTO);
 		
-		 Country entity = ApiMapper.INSTANCE.DTOToEntity(country);
+		Country entity = ApiMapper.INSTANCE.DTOToEntity(country);
 		Country savedEntity = countryRepository.save(entity).block();
 
 		Set<ConstraintViolation<Country>> violations = validator.validate(entity);
