@@ -89,4 +89,15 @@ public class Currency implements Serializable {
 	public int hashCode() {
 		return Objects.hash(code, symbol, description, enabled, decimalPlaces, countryId);
 	}
+	// toString method
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", enabled=" + enabled +
+                ", decimalPlaces=" + decimalPlaces +
+                ", symbol='" + symbol + '\'' +
+                '}';
+    }
 }

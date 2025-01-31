@@ -28,4 +28,16 @@ public class CurrencyDTO {
         this.enable = enable;
         this.decimalPlaces = decimalPlaces;
     }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "CurrencyDTO{" +
+                "id=" + getId().toString() +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", enable=" + enable +
+                ", decimalPlaces=" + decimalPlaces +'}';
+    }
+    
 }

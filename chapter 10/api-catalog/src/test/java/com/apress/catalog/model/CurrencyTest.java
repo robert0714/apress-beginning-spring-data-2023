@@ -66,7 +66,7 @@ public class CurrencyTest {
     @Test
     public void testCurrencyToString() {
         Currency currency = new Currency(  "USD", "Dollar", true, 2, "$");
-        String expectedString = "Currency{id=1, code='USD', description='Dollar', enabled=true, decimalPlaces=2, symbol='$'}";
+        String expectedString = "Currency{code='USD', description='Dollar', enabled=true, decimalPlaces=2, symbol='$'}";
 
         assertEquals(expectedString, currency.toString());
     }
