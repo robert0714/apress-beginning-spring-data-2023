@@ -43,6 +43,7 @@ public class CurrencySpecificationTest {
         
         Root<Currency> currencyRoot = mock(Root.class);
         when(criteriaBuilder.equal(any(), any())).thenReturn(predicate);
+        when(criteriaBuilder.and(any(Predicate[].class))).thenReturn(predicate);
         
         when(criteriaBuilder.createQuery(Currency.class)).thenReturn(cq);
 		when(cq.from(Currency.class)).thenReturn(currencyRoot);
@@ -52,6 +53,6 @@ public class CurrencySpecificationTest {
         Predicate result = currencySpecification.toPredicate( this.root,  this.criteriaQuery,  this.criteriaBuilder);
 
         assertNotNull(result);
-        verify(criteriaBuilder, times(1)).equal( this.root.get("code"),  this.currency.getCode());
+        verify(criteriaBuilder, times(1)).equal(path,  this.currency.getCode());
     }
 }
