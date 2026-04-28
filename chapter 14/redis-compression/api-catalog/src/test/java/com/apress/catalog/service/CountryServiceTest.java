@@ -9,7 +9,6 @@ import com.apress.catalog.repository.CountryRepository;
 import com.apress.catalog.repository.CurrencyRepository;
 import com.redis.testcontainers.RedisContainer;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,13 +60,9 @@ public class CountryServiceTest {
         registry.add("redis.master.port", () -> REDIS_CONTAINER.getMappedPort(6379)
             .toString()); 
         registry.add("redis.slaves[0].host", REDIS_CONTAINER::getHost);
-        registry.add("redis.slaves[1].port", () -> REDIS_CONTAINER.getMappedPort(6379)
+        registry.add("redis.slaves[0].port", () -> REDIS_CONTAINER.getMappedPort(6379)
             .toString()); 
     }
-    @AfterEach
-	public void cleanUp() { 
-		REDIS_CONTAINER.close();
-	} 
     
     
 	@Test   

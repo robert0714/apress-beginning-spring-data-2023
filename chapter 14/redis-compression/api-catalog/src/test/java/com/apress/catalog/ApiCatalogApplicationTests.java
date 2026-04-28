@@ -15,7 +15,7 @@ class ApiCatalogApplicationTests {
         System.setProperty("redis.master.host", redis.getHost());
         System.setProperty("redis.master.port", redis.getMappedPort(6379).toString());
         System.setProperty("redis.slaves[0].host", redis.getHost());
-        System.setProperty("redis.slaves[1].port", redis.getMappedPort(6379).toString());
+        System.setProperty("redis.slaves[0].port", redis.getMappedPort(6379).toString());
     }
 	@Test
 	void contextLoads() {

@@ -9,9 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations; 
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
@@ -80,15 +78,10 @@ public class CurrencyServiceTest {
         assertFalse(currency.getEnabled());
     }
     @Test
-    @Rollback
-    @Transactional
-    public void should_rollback_transaction_on_exception() {
+    public void should_throw_exception_on_save_failure() {
         CurrencyDTO currencyDTO = new CurrencyDTO(2L, "EUR", "Euro", true, 2);
-        Currency currency = ApiMapper.INSTANCE.DTOToEntity(currencyDTO);
 
-        when(repository.save(any(Currency.class))).thenReturn(currency);
-
-        // Simulate an exception to trigger rollback
+        // Simulate an exception from repository
         doThrow(new RuntimeException("Simulated Exception")).when(repository).save(any(Currency.class));
 
         assertThrows(RuntimeException.class, () -> {
@@ -97,9 +90,5 @@ public class CurrencyServiceTest {
 
         // Verify that the save method was called
         verify(repository, times(1)).save(any(Currency.class));
-
-        // Verify that the transaction was rolled back
-        Optional<Currency> result = repository.findById(2L);
-        assertFalse(result.isPresent());
     }
 }

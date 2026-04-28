@@ -4,7 +4,7 @@ import com.apress.catalog.exception.SerializeException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class JsonGzipSerializerUtil {
         OBJECT_MAPPER = new ObjectMapper()
                 .configure(MapperFeature.USE_GETTERS_AS_SETTERS, false)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .registerModule(new JavaTimeModule());
     }
 
