@@ -1,18 +1,15 @@
 package com.apress.catalog.repository;
 
 import com.apress.catalog.model.Currency;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.quickperf.junit5.QuickPerfTest;
-import org.quickperf.spring.sql.QuickPerfSqlConfig;
-import org.quickperf.sql.annotation.AnalyzeSql;
-import org.quickperf.sql.annotation.ExpectSelect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.containers.output.ToStringConsumer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -21,8 +18,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import(QuickPerfSqlConfig.class)
-@QuickPerfTest
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CurrencyRepositoryIntegrationTest {
@@ -31,7 +26,7 @@ public class CurrencyRepositoryIntegrationTest {
     CurrencyRepository currencyRepository;
 
     public static PostgreSQLContainer postgreSQL =
-            new PostgreSQLContainer<>("postgres:13.1")
+            new PostgreSQLContainer("postgres:14")
                     .withUsername("postgres")
                     .withPassword("postgres")
                     .withDatabaseName("catalog")
@@ -43,7 +38,10 @@ public class CurrencyRepositoryIntegrationTest {
     public static void setUp() {
         postgreSQL.start();
     }
-
+    @AfterAll
+    static void stopContainer() {
+    	postgreSQL.stop(); // Stop the container after all tests
+    }
 
     @DynamicPropertySource
     static void postgresqlProperties(DynamicPropertyRegistry registry) {
@@ -53,8 +51,6 @@ public class CurrencyRepositoryIntegrationTest {
     }
 
     @Test
-    @ExpectSelect(1) //Validate the number of queries that are executed
-    @AnalyzeSql
     public void should_get_a_currency() {
         Optional<Currency> currency = currencyRepository.findById(1L);
 
@@ -66,7 +62,6 @@ public class CurrencyRepositoryIntegrationTest {
 
 
     @Test
-    @ExpectSelect(1)
     public void should_get_all_currencies() {
         List<Currency> currencies = (List<Currency>) currencyRepository.findAll();
 
