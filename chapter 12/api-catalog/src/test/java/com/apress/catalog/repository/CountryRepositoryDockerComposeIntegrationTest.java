@@ -3,30 +3,32 @@ package com.apress.catalog.repository;
 import com.apress.catalog.model.Country;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//@Testcontainers
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
+@SpringBootTest
 public class CountryRepositoryDockerComposeIntegrationTest {
 
-    private static final Integer POSTGRES_PORT = 5032;
+    private static final Integer POSTGRES_PORT = 5432;
     @Autowired
     CountryRepository countryRepository;
 
 
-    private static final DockerComposeContainer environment =
-            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"))
-                    .withExposedService("postgres", POSTGRES_PORT, Wait.forListeningPort())
-                    .withLocalCompose(true);
+    private static final ComposeContainer environment =
+            new ComposeContainer(new File("src/test/resources/docker-compose.yml"))
+                    .withExposedService("postgres", POSTGRES_PORT, Wait.forListeningPort());
 
     @BeforeAll
     public static void setUp() {
@@ -48,7 +50,7 @@ public class CountryRepositoryDockerComposeIntegrationTest {
         registry.add("spring.datasource.password", () -> "postgres");
     }
 
-    //@Test
+    @Test
     public void should_get_a_country() {
         Optional<Country> country = countryRepository.findById(1L);
 

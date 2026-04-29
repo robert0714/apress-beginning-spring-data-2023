@@ -29,7 +29,7 @@ public class CountryRepositoryIntegrationTest {
     CountryRepository countryRepository;
 
     public static PostgreSQLContainer postgreSQL =
-            new PostgreSQLContainer("postgres:14")
+            new PostgreSQLContainer("postgres:15.6")
                     .withUsername("postgres")
                     .withPassword("postgres")
                     .withDatabaseName("catalog")
