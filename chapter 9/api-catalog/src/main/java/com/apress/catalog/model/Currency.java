@@ -103,4 +103,16 @@ public class Currency implements Serializable {
 	public int hashCode() {
 		return Objects.hash(id, code, symbol, description, enabled, decimalPlaces, country);
 	}
+
+	@Override
+	public String toString() {
+		return "Currency{" +
+				"id=" + id +
+				", code='" + code + '\'' +
+				", description='" + description + '\'' +
+				", enabled=" + enabled +
+				", decimalPlaces=" + decimalPlaces +
+				", symbol='" + symbol + '\'' +
+				'}';
+	}
 }

@@ -19,7 +19,7 @@ class ApiCatalogApplicationTests {
 	@BeforeAll
 	static void initializeNeo4j() {
 
-		neo4jContainer = new Neo4jContainer<>(DockerImageName.parse("neo4j:4.4"))
+		neo4jContainer = new Neo4jContainer<>(DockerImageName.parse("neo4j:5.26.25"))
 			.withEnv("TZ", "Asia/Taipei") 
 			.withAdminPassword("somePassword");
 		neo4jContainer.start();
