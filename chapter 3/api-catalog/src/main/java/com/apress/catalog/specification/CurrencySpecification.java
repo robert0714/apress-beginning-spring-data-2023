@@ -7,9 +7,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CurrencySpecification implements Specification<Currency> {
 	
 	private static final long serialVersionUID = 2753473399996931822L;
@@ -22,19 +19,6 @@ public class CurrencySpecification implements Specification<Currency> {
 
 	@Override
 	public Predicate toPredicate(Root<Currency> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-		//create a new predicate list
-		List<Predicate> predicates = new ArrayList<>();
-
-		CriteriaQuery<Currency> cq = criteriaBuilder.createQuery(Currency.class);
-
-		// You need to define the main entity
-		Root<Currency> currency = cq.from(Currency.class);
-
-		// Define all the conditions of the query
-		Predicate codePredicate = criteriaBuilder.equal(currency.get("code"), entity.getCode());
-
-		predicates.add(codePredicate);
-
-		return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+		return criteriaBuilder.equal(root.get("code"), entity.getCode());
 	}
 }
