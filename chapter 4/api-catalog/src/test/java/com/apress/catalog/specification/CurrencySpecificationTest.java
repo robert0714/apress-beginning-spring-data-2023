@@ -3,6 +3,7 @@ package com.apress.catalog.specification;
 import com.apress.catalog.model.Currency;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -42,7 +43,7 @@ public class CurrencySpecificationTest {
         CriteriaQuery<Currency> cq = mock(CriteriaQuery.class);
         
         Root<Currency> currencyRoot = mock(Root.class);
-        when(criteriaBuilder.equal(any(), any())).thenReturn(predicate);
+        when(criteriaBuilder.equal((Expression<?>) any(), (Object) any())).thenReturn(predicate);
         
         when(criteriaBuilder.createQuery(Currency.class)).thenReturn(cq);
 		when(cq.from(Currency.class)).thenReturn(currencyRoot);

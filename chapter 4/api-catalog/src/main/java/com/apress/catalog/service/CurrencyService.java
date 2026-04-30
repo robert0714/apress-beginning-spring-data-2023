@@ -17,11 +17,13 @@ import java.util.Set;
 public class CurrencyService {
 
 	CurrencyRepository repository;
+	ApiMapper apiMapper;
 	Validator validator;
 	
 	@Autowired
-	public CurrencyService(CurrencyRepository repository,  Validator validator) {
+	public CurrencyService(CurrencyRepository repository, ApiMapper apiMapper, Validator validator) {
 		this.repository = repository;
+		this.apiMapper = apiMapper;
 		this.validator = validator;
 	}
 	
@@ -30,7 +32,7 @@ public class CurrencyService {
 		Optional<Currency> currency = repository.findById(id);
 		
 		if(currency.isPresent()) {
-			response = ApiMapper.INSTANCE.entityToDTO(currency.get());
+			response = apiMapper.entityToDTO(currency.get());
 		}
 		
 		return response;
@@ -54,7 +56,7 @@ public class CurrencyService {
 	}
 
 	private CurrencyDTO saveInformation(CurrencyDTO currency) {
-		Currency entity = ApiMapper.INSTANCE.DTOToEntity(currency);
+		Currency entity = apiMapper.DTOToEntity(currency);
 
 		Set<ConstraintViolation<Currency>> violations = validator.validate(entity);
 		if(!violations.isEmpty()) {
@@ -63,6 +65,6 @@ public class CurrencyService {
 
 		Currency savedEntity = repository.save(entity);
 
-		return ApiMapper.INSTANCE.entityToDTO(savedEntity);
+		return apiMapper.entityToDTO(savedEntity);
 	}
 }

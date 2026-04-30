@@ -96,4 +96,16 @@ public class Currency extends Base implements Serializable {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), code, symbol, description, enabled, decimalPlaces);
 	}
+
+	@Override
+	public String toString() {
+		return "Currency{" +
+				"id=" + getId() +
+				", code='" + code + '\'' +
+				", description='" + description + '\'' +
+				", enabled=" + enabled +
+				", decimalPlaces=" + decimalPlaces +
+				", symbol='" + symbol + '\'' +
+				'}';
+	}
 }

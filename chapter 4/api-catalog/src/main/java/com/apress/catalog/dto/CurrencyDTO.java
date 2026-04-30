@@ -1,8 +1,6 @@
 package com.apress.catalog.dto;
 
-import java.io.Serializable; 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import java.io.Serializable;
 
 import lombok.Data;
 @Data
@@ -27,7 +25,14 @@ public class CurrencyDTO implements Serializable {
         this.decimalPlaces = decimalPlaces;
     }
 
+	@Override
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,ToStringStyle.JSON_STYLE,true);
+		return "CurrencyDTO{" +
+				"id=" + id +
+				", code='" + code + '\'' +
+				", description='" + description + '\'' +
+				", enable=" + enable +
+				", decimalPlaces=" + decimalPlaces +
+				'}';
 	}
 }
