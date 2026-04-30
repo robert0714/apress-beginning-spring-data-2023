@@ -8,13 +8,8 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class CurrencySpecificationTest {
@@ -39,19 +34,12 @@ public class CurrencySpecificationTest {
     @Test
     public void testToPredicate() {
         Predicate predicate = mock(Predicate.class);
-        CriteriaQuery<Currency> cq = mock(CriteriaQuery.class);
-        
-        Root<Currency> currencyRoot = mock(Root.class);
-        when(criteriaBuilder.equal(any(), any())).thenReturn(predicate);
-        
-        when(criteriaBuilder.createQuery(Currency.class)).thenReturn(cq);
-		when(cq.from(Currency.class)).thenReturn(currencyRoot);
-		Path<Object> path= mock(Path.class);
-		when(currencyRoot.get("code")).thenReturn(path);
+        Path<Object> path = mock(Path.class);
+        when(root.get("code")).thenReturn(path);
+        when(criteriaBuilder.equal(path, "USD")).thenReturn(predicate);
       
         Predicate result = currencySpecification.toPredicate( this.root,  this.criteriaQuery,  this.criteriaBuilder);
 
         assertNotNull(result);
-        verify(criteriaBuilder, times(1)).equal( this.root.get("code"),  this.currency.getCode());
     }
 }

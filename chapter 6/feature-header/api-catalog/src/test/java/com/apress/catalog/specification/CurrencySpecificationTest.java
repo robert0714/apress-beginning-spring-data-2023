@@ -42,7 +42,7 @@ public class CurrencySpecificationTest {
         CriteriaQuery<Currency> cq = mock(CriteriaQuery.class);
         
         Root<Currency> currencyRoot = mock(Root.class);
-        when(criteriaBuilder.equal(any(), any())).thenReturn(predicate);
+        when(criteriaBuilder.equal(any(), (Object) any())).thenReturn(predicate);
         
         when(criteriaBuilder.createQuery(Currency.class)).thenReturn(cq);
 		when(cq.from(Currency.class)).thenReturn(currencyRoot);
