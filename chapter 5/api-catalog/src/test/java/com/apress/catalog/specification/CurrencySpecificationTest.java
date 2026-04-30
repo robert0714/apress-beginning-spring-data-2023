@@ -3,15 +3,10 @@ package com.apress.catalog.specification;
 import com.apress.catalog.model.Currency;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.data.jpa.domain.Specification;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,15 +34,8 @@ public class CurrencySpecificationTest {
     @Test
     public void testToPredicate() {
         Predicate predicate = mock(Predicate.class);
-        CriteriaQuery<Currency> cq = mock(CriteriaQuery.class);
         
-        Root<Currency> currencyRoot = mock(Root.class);
-        when(criteriaBuilder.equal(any(), any())).thenReturn(predicate);
-        
-        when(criteriaBuilder.createQuery(Currency.class)).thenReturn(cq);
-		when(cq.from(Currency.class)).thenReturn(currencyRoot);
-		Path<Object> path= mock(Path.class);
-		when(currencyRoot.get("code")).thenReturn(path);
+        when(criteriaBuilder.equal(any(), (Object) any())).thenReturn(predicate);
       
         Predicate result = currencySpecification.toPredicate( this.root,  this.criteriaQuery,  this.criteriaBuilder);
 

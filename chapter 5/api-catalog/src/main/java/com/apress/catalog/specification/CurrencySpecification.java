@@ -25,17 +25,16 @@ public class CurrencySpecification implements Specification<Currency> {
 		
         //create a new predicate list
         List<Predicate> predicates = new ArrayList<>();
-		
-	    CriteriaQuery<Currency> cq = builder.createQuery(Currency.class);
-
-	    // You need to define the main entity
-	    Root<Currency> currency = cq.from(Currency.class); 
 
 	    // Define all the conditions of the query
-	    Predicate codePredicate = builder.equal(currency.get("code"), entity.getCode());
-	    
-	    predicates.add(codePredicate);
+	    if (entity.getCode() != null) {
+	        Predicate codePredicate = builder.equal(root.get("code"), entity.getCode());
+	        predicates.add(codePredicate);
+	    }
 
+	    if (predicates.size() == 1) {
+	        return predicates.get(0);
+	    }
 	    return builder.and(predicates.toArray(new Predicate[0]));
 	}
 }

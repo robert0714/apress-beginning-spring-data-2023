@@ -85,6 +85,18 @@ public class Currency extends Base implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Currency{" +
+				"id=" + getId() +
+				", code='" + code + '\'' +
+				", description='" + description + '\'' +
+				", enabled=" + enabled +
+				", decimalPlaces=" + decimalPlaces +
+				", symbol='" + symbol + '\'' +
+				'}';
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
