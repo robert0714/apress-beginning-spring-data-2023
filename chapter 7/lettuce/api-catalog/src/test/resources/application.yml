@@ -9,3 +9,8 @@ server:
   port: 8080 # Indicate the default port of the application
   servlet:
     context-path: /api/catalog # Indicate the default url 
+
+logging:
+  level:
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG    

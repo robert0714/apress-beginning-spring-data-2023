@@ -1,22 +1,32 @@
 package com.apress.catalog;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest; 
-import org.testcontainers.containers.GenericContainer;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.utility.DockerImageName;
- 
+import com.redis.testcontainers.RedisContainer;
 
-@SpringBootTest  
+@SpringBootTest
 class ApiCatalogApplicationTests {
+
+	static final RedisContainer REDIS_CONTAINER;
+
 	static {
-        GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:6.2.6-alpine"))
-          .withExposedPorts(6379);
-        redis.start();
-        System.setProperty("redis.master.host", redis.getHost());
-        System.setProperty("redis.master.port", redis.getMappedPort(6379).toString());
-        System.setProperty("redis.slaves[0].host", redis.getHost());
-        System.setProperty("redis.slaves[1].port", redis.getMappedPort(6379).toString());
-    }
+		REDIS_CONTAINER = new RedisContainer(DockerImageName.parse("redis:6.2.14-alpine")).withExposedPorts(6379);
+		REDIS_CONTAINER.start();
+	}
+
+	@DynamicPropertySource
+	static void registerRedisProperties(DynamicPropertyRegistry registry) {
+		registry.add("redis.master.host", REDIS_CONTAINER::getHost);
+		registry.add("redis.master.port", () -> REDIS_CONTAINER.getMappedPort(6379).toString());
+		registry.add("redis.slaves[0].host", REDIS_CONTAINER::getHost);
+		registry.add("redis.slaves[0].port", () -> REDIS_CONTAINER.getMappedPort(6379).toString());
+		registry.add("spring.data.redis.host", REDIS_CONTAINER::getHost);
+		registry.add("spring.data.redis.port", () -> REDIS_CONTAINER.getMappedPort(6379).toString());
+	}
+
 	@Test
 	void contextLoads() {
 	}

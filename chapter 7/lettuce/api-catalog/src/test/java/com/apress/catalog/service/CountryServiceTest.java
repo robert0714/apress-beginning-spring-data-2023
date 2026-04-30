@@ -52,22 +52,22 @@ public class CountryServiceTest {
     @Autowired
     private CountryService countryService;
     
-    @Container
-    private static final RedisContainer REDIS_CONTAINER = new RedisContainer(DockerImageName.parse("redis:6.2.14-alpine")).withExposedPorts(6379);
+    static final RedisContainer REDIS_CONTAINER;
+
+    static {
+        REDIS_CONTAINER = new RedisContainer(DockerImageName.parse("redis:6.2.14-alpine")).withExposedPorts(6379);
+        REDIS_CONTAINER.start();
+    }
 
     @DynamicPropertySource
-    private static void registerRedisProperties(DynamicPropertyRegistry registry) {  
+    static void registerRedisProperties(DynamicPropertyRegistry registry) {  
         registry.add("redis.master.host", REDIS_CONTAINER::getHost);
-        registry.add("redis.master.port", () -> REDIS_CONTAINER.getMappedPort(6379)
-            .toString()); 
+        registry.add("redis.master.port", () -> REDIS_CONTAINER.getMappedPort(6379).toString()); 
         registry.add("redis.slaves[0].host", REDIS_CONTAINER::getHost);
-        registry.add("redis.slaves[1].port", () -> REDIS_CONTAINER.getMappedPort(6379)
-            .toString()); 
+        registry.add("redis.slaves[0].port", () -> REDIS_CONTAINER.getMappedPort(6379).toString());
+        registry.add("spring.data.redis.host", REDIS_CONTAINER::getHost);
+        registry.add("spring.data.redis.port", () -> REDIS_CONTAINER.getMappedPort(6379).toString());
     }
-    @AfterEach
-	public void cleanUp() { 
-		REDIS_CONTAINER.close();
-	} 
     
     
 	@Test   
