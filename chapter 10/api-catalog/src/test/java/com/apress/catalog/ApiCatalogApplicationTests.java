@@ -25,7 +25,7 @@ class ApiCatalogApplicationTests {
 	private static final String KEYSPACE_NAME = "twa";
     @Container
     private static final CassandraContainer<?> cassandra 
-        = new CassandraContainer<>(DockerImageName.parse("cassandra:4.0.13")) 
+        = new CassandraContainer<>(DockerImageName.parse("cassandra:4.0.20")) 
            .withEnv("TZ", "Asia/Taipei")
     		.withExposedPorts(9042);
     

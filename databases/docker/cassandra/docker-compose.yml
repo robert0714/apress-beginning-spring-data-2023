@@ -2,7 +2,7 @@ version: "2.1"
 
 services:
   cassandra-1:
-    image: cassandra:4.0.13
+    image: cassandra:4.0.20
     container_name: cassandra-1
     environment:
       CASSANDRA_CLUSTER_NAME: twa
@@ -18,7 +18,7 @@ services:
         ipv4_address: 10.0.75.11
 
   cassandra-2:
-    image: cassandra:4.0.13
+    image: cassandra:4.0.20
     container_name: cassandra-2
     environment:
       CASSANDRA_CLUSTER_NAME: twa
@@ -37,7 +37,7 @@ services:
         ipv4_address: 10.0.75.12
 
   cassandra-3:
-    image: cassandra:4.0.13
+    image: cassandra:4.0.20
     container_name: cassandra-3
     environment:
       CASSANDRA_CLUSTER_NAME: twa

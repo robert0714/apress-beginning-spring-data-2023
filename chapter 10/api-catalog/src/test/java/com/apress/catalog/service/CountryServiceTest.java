@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;  
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.CassandraContainer;
+import org.testcontainers.cassandra.CassandraContainer;
 import org.testcontainers.junit.jupiter.Container;  
 import org.testcontainers.utility.DockerImageName;
 
@@ -57,8 +57,8 @@ public class CountryServiceTest {
     
     private static final String KEYSPACE_NAME = "twa";
     @Container
-    private static final CassandraContainer<?> cassandra 
-        = new CassandraContainer<>(DockerImageName.parse("cassandra:4.0.13")) 
+    private static final CassandraContainer cassandra 
+        = new CassandraContainer(DockerImageName.parse("cassandra:4.0.20")) 
            .withEnv("TZ", "Asia/Taipei")
     		.withExposedPorts(9042);
     

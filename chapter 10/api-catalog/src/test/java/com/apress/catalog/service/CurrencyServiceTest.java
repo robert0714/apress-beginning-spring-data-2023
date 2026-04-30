@@ -54,7 +54,8 @@ public class CurrencyServiceTest {
         CurrencyDTO result = currencyService.save(currencyDTO);
 
         assertNotNull(result);
-        assertEquals(currencyDTO, result);
+        CurrencyDTO expected = ApiMapper.INSTANCE.entityToDTO(currency);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -66,7 +67,8 @@ public class CurrencyServiceTest {
         CurrencyDTO result = currencyService.update(currencyDTO);
 
         assertNotNull(result);
-        assertEquals(currencyDTO, result);
+        CurrencyDTO expected = ApiMapper.INSTANCE.entityToDTO(currency);
+        assertEquals(expected, result);
     }
 
     @Test

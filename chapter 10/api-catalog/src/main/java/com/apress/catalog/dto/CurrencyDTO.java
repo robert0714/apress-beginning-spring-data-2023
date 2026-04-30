@@ -33,7 +33,7 @@ public class CurrencyDTO {
     @Override
     public String toString() {
         return "CurrencyDTO{" +
-                "id=" + getId().toString() +
+                "id=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", enable=" + enable +
