@@ -7,14 +7,22 @@
     <groupId>com.apress</groupId>
     <artifactId>repository</artifactId>
     <version>1.0.0</version>
+    <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <file.encoding>UTF-8</file.encoding>
+		<java.version>17</java.version>
+		<mapstruct.version>1.6.3</mapstruct.version>
+		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+		<testcontainers.version>2.0.5</testcontainers.version><!-- check the latest version on the Maven repository -->		
+	</properties>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>
