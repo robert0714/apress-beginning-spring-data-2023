@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.6</version>
+		<version>3.5.14</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.apress</groupId>
@@ -15,8 +15,10 @@
 	<description>Microservices which contain all the information of the catalog </description>
 	<properties>
 		<java.version>17</java.version>
-		<mapstruct.version>1.6.3</mapstruct.version>
+		<mapstruct.version>1.6.3</mapstruct.version><!-- check the latest version on the Maven repository -->
 		<maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+        <mockito-junit-jupiter.version>5.9.0</mockito-junit-jupiter.version>
+		<testcontainers.version>2.0.5</testcontainers.version><!-- check the latest version on the Maven repository -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,7 +60,7 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>${mapstruct.version}</version><!-- check the latest version on the Maven repository -->
+			<version>${mapstruct.version}</version>
 		</dependency>
 
 		<dependency>
@@ -82,6 +84,12 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+            <scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.flywaydb</groupId>
+		    <artifactId>flyway-database-postgresql</artifactId>
+		    <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -99,6 +107,7 @@
 		<dependency>
 		   <groupId>org.testcontainers</groupId>
 		   <artifactId>r2dbc</artifactId>
+		   <version>1.21.4</version>
 		   <scope>test</scope>
 		</dependency>
 		<dependency>
@@ -108,12 +117,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
+			<artifactId>testcontainers-junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
+			<artifactId>testcontainers-postgresql</artifactId>
+            <version>2.0.5</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -178,5 +189,15 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
+    <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version> 
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

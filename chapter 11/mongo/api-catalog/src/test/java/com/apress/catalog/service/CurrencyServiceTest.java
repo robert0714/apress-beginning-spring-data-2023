@@ -111,6 +111,9 @@ public class CurrencyServiceTest {
         verify(repository, times(1)).save(any(Currency.class));
 
         // Verify that the transaction was rolled back
+        Mono<Currency> findMono = mock(Mono.class);
+        when(repository.findById(2L)).thenReturn(findMono);
+        when(findMono.blockOptional()).thenReturn(Optional.empty());
         Mono<Currency> result  = repository.findById(2L);
         assertFalse(result.blockOptional().isPresent());
     }

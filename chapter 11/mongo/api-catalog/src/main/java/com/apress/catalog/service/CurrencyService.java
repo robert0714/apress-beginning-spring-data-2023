@@ -63,8 +63,11 @@ public class CurrencyService {
 			throw new ConstraintViolationException(violations);
 		}
 
-		Currency savedEntity = repository.save(entity).block();
+		Optional<Currency> savedEntity = repository.save(entity).blockOptional();
 
-		return ApiMapper.INSTANCE.entityToDTO(savedEntity);
+		if(savedEntity.isPresent()) {
+			return ApiMapper.INSTANCE.entityToDTO(savedEntity.get());
+		}
+		return null;
 	}
 }

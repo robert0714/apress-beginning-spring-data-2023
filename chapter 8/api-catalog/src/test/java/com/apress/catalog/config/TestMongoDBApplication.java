@@ -13,7 +13,7 @@ public class TestMongoDBApplication {
   @Bean 
   @ServiceConnection
   public MongoDBContainer  mongoDBContainer() {
-	 this.container = new MongoDBContainer ("mongo:4.0.10")
+	 this.container = new MongoDBContainer ("mongo:4.4.30")
 //			 .withEnv("EXTRA_OPTS", "\"--lower_case_table_names=1\"")
 			 .withEnv("TZ", "Asia/Taipei") 
 //			 .withPassword("") 
